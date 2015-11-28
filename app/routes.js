@@ -68,7 +68,7 @@ module.exports = function(app) {
                 var push_file = {tag: req.body.tag , file_name : file_name};
                 sub_images.push(push_file);
                 console.log(sub_images);
-                return res.json({'status': 'success'});
+                return res.send(file_name);
             }
         });
 

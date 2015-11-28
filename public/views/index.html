@@ -31,35 +31,44 @@
 
 </head>
 <body ng-app="KobeMono" ng-controller="MainCtrl">
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+            <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+        </md-button>
+        <h2>
+            <span>Toolbar with Icon Buttons</span>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Favorite">
+            <md-icon md-svg-icon="img/icons/favorite.svg" style="color: greenyellow;"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="More">
+            <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
 <div id="addButton">
-    <md-button aria-label="menu" class="md-fab md-warn" ng-click="addNewPost()">
+    <md-button aria-label="menu" class="md-fab md-warn md-primary"  ng-click="toggleLeft()">
         <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
     </md-button>
 </div>
-<!-- 메인 콘텐츠 부분 -->
-<div class="row">
-    <div id="main" ng-class="showSide ? 'col-xs-7' : 'col-xs-12'">
-        <!-- 여기는 angular 에 의해 채워짐 -->
-        <div ng-view></div>
-    </div>
-    <div id="sideBar" ng-class="showSide ? 'col-xs-5' : 'hidden'">
+<section layout="row" flex>
+    <md-sidenav class="md-sidenav-left" md-component-id="left">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">Sidenav Right</h1>
+        </md-toolbar>
+        <md-content ng-controller="LeftCtrl" layout-padding>
 
-        title:
-        <input type="text" name="name" ng-model="name"><br/>
-        image:
-        <input type="file" ngf-select ng-model="mainPhoto" name="main_photo"><br/>
-        <img ng-show="newPostForm.file.$valid" ngf-thumbnail="mainPhoto">
-        context:
-        <input type="text" name="context"><br/>
-        sub_images:
-        <div ng-repeat="sub_file in sub_files track by $index">
-            <img ng-src="{{sub_file.src}}">
-        </div>
-        <button ng-click="addSubItem()">addSubItem</button>
-        <br/>
-        Add new Photo:
-        <button ng-click="AddNewPost()">submit</button>
-    </div>
+            <md-button ng-click="close()" class="md-primary">
+                Close Sidenav Right
+            </md-button>
+        </md-content>
+    </md-sidenav>
+</section>
+<div ng-view></div>
+
+    <!--
     <modal title="SubImage Form" visible="showModal">
         <div id="AddNewPhoto_div">
             <div>Crop Image and Upload</div>
@@ -78,6 +87,7 @@
             <button ng-click="addPhoto()"> add this photo</button>
         </div>
     </modal>
+    -->
 </div>
 
 </body>

@@ -5,8 +5,15 @@
 .cropArea {
     background: #E4E4E4;
     overflow: hidden;
-    width:200px;
-    height:200px;
+    width:400px;
+    height:400px;
+}
+#cropped_image{
+    width:400px;
+    height:400px;
+}
+.md-card{
+    float: left;
 }
 .fabSpeedDialdemoBasicUsage .text-capitalize {
     text-transform: capitalize; }
@@ -29,5 +36,5 @@
 #addButton{
     position: fixed;
     bottom: 0;
-    left: 0;
+    right: 0;
 }
