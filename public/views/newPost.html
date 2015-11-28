@@ -1,0 +1,36 @@
+<form action="/api/new/post" method="POST" enctype="multipart/form-data" name="newPostForm">
+    title:
+    <input type="text" name="name"><br/>
+    image:
+    <input type="file" ngf-select ng-model="mainPhoto" required name="main_photo"><br/>
+    <img ng-show="newPostForm.file.$valid" ngf-thumbnail="mainPhoto">
+
+    context:
+    <input type="text" name="context"><br/>
+    sub_images:
+    <div ng-repeat="sub_file in sub_files track by $index">
+        <img ng-src="{{sub_file.src}}">
+    </div>
+    <br/>
+    Add new Photo:
+    <button ng-click="AddNewPost()">submit</button>
+    <input type="submit" value="Upload">
+</form>
+------------------------------------------
+<div id="AddNewPhoto_div">
+    <div>Crop Image and Upload</div>
+    <button ngf-select ng-model="picFile" accept="image/*">
+        Select Picture</button>
+    <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+         class="cropArea">
+        <img-crop image="picFile  | ngfDataUrl"
+                  result-image="croppedDataUrl" ng-init="croppedDataUrl=''"
+                  change-on-fly="true" area-type="square">
+        </img-crop>
+    </div>
+    <div>
+        <img ng-src="{{croppedDataUrl}}" />
+    </div>
+    <button ng-click="addPhoto()"> add this photo</button>
+</div>
+

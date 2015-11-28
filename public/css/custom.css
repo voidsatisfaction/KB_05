@@ -1,0 +1,10 @@
+/**
+ * Created by Cheol on 2015. 11. 28..
+ */
+
+.cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width:500px;
+    height:350px;
+}

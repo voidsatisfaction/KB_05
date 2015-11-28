@@ -1,0 +1,13 @@
+{
+  "name": "kobe_express",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "latest",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "ng-file-upload": "~10.0.2",
+    "ng-file-upload-shim": "~10.0.2"
+  }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Kobe Mono</title>
+
+    <link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.css">
+    <script src="../libs/jquery/dist/jquery.min.js"></script>
+    <script src="../head_file/bootstrap.min.js"></script>
+    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+    <script src="//code.angularjs.org/1.4.8/angular.js"></script>
+    <script src="//code.angularjs.org/1.4.8/angular-route.js"></script>
+
+    <script src="../libs/angular-file-upload/dist/angular-file-upload.min.js"></script>
+
+    <script src="../libs/ng-file-upload/ng-file-upload-all.min.js"></script>
+    <script src="../libs/ng-file-upload/ng-img-crop.js"></script>
+    <link rel="stylesheet" href="../libs/ng-file-upload/ng-img-crop.css">
+
+
+
+
+    <script src="../js/app.js"></script>
+    <link rel="stylesheet" href="../css/custom.css">
+
+</head>
+<body ng-app="KobeMono">
+<!-- 일단 메뉴바 -->
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Kobe Mono</a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#/about"><i class="fa fa-shield"></i> About</a></li>
+                    <li><a href="#/new_post"><i class="fa fa-comment"></i> PhotoUpload</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+<!-- 메인 콘텐츠 부분 -->
+    <div id="main" ng-controller="MainCtrl">
+        <!-- 여기는 angular 에 의해 채워짐 -->
+        <div ng-view></div>
+    </div>
+</body>
+</html>
