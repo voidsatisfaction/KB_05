@@ -1,19 +1,19 @@
 <md-content ng-controller="NewPostCtrl" layout-padding>
-    <form>
+    <form ng-upload="uploadComplete">
         <md-input-container>
             <label>Title input</label>
             <input type="text" id="title"
                    ng-model="title" md-autofocus>
         </md-input-container>
         <md-input-container>
-            <input type="file" id="mainPhoto"
-                   ng-model="photo" ngf-select>
+            <input type="file" id="photo"
+                   ng-model="photo" ngf-select file-model="file">
         </md-input-container>
         <img width="200" ngf-thumbnail="photo">
         <md-input-container>
             <label>TextArea input</label>
                     <textarea type="text" id="context"
-                              ng-model="post.context"></textarea>
+                              ng-model="context"></textarea>
         </md-input-container>
         <div ng-repeat="sub_file in sub_files track by $index">
             <img ng-src="{{sub_file.src}}">
@@ -21,5 +21,9 @@
         <md-button class="md-primary md-raised" ng-click="AddNewPost($event)" flex-sm="100" flex-md="100" flex-gt-md="auto">
             Add sub_images
         </md-button>
+        <md-button class="md-primary md-raised" ng-click="upload()" flex-sm="100" flex-md="100" flex-gt-md="auto">
+            Upload
+        </md-button>
+
     </form>
 </md-content>

@@ -11,18 +11,24 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content">
-                <md-button ngf-select ng-model="photo" accept="image/*" class="md-icon-button">
-                    選択</md-button>
-                <div ngf-drop ng-model="photo" ngf-pattern="image/*"
-                     class="cropArea">
-                    <img-crop image="photo  | ngfDataUrl"
-                              result-image="croppedDataUrl" ng-init="croppedDataUrl=''"
-                              change-on-fly="true" area-type="square">
-                    </img-crop>
+                <div class="row">
+                    <md-button ngf-select ng-model="photo" accept="image/*" class="md-icon-button">
+                        選択</md-button>
+                    <div ngf-drop ng-model="photo" ngf-pattern="image/*"
+                         class="cropArea">
+                        <img-crop image="photo  | ngfDataUrl"
+                                  result-image="croppedDataUrl" ng-init="croppedDataUrl=''"
+                                  change-on-fly="true" area-type="square">
+                        </img-crop>
+                    </div>
+                    <div>
+                        <img id="cropped_image" ng-src="{{croppedDataUrl}}" />
+                    </div>
                 </div>
-                <div>
-                    <img id="cropped_image" ng-src="{{croppedDataUrl}}" />
-                </div>
+                <md-input-container>
+                    <label>Tag</label>
+                    <input type="text" ng-model="tag">
+                </md-input-container>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">

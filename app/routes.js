@@ -21,9 +21,19 @@ module.exports = function(app) {
         var new_user = new user();
 
         new_user.name = req.body.user_name;
+        new_user.pass = req.body.pass;
         new_user.save(function (err) {
             res.json('success new user');
         });
+    });
+
+    app.post('/api/login', function (req, res) {
+
+    });
+
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
     });
 
     // /api/posts의 get event가 발생한다면
@@ -32,9 +42,26 @@ module.exports = function(app) {
         post.find(function(err, posts) {
             if (err)
                 res.send(err);
-
             res.json(posts); // 모든 post를 json형태로 전달. view는 나중에 angular에서 처리
         });
+    });
+
+    app.get('/api/post/:postId', function (req, res) {
+        post.findOne({_id: req.params.postId})
+            .exec(function (err, data) {
+                res.json(data);
+            });
+    });
+
+    app.get('/api/find/tag/:findString', function (req, res) {
+        var findString = req.params.findString;
+        var tags = findString.split("#").forEach(function (element, index, array) {
+            tags[index] = tags[index].replace(" ","");
+        });
+        post.find({tag: tags[0]})
+            .exec(function (err, docs) {
+                res.json(docs);
+            });
     });
 
     app.post('/api/new/post', function (req, res) {
@@ -42,10 +69,12 @@ module.exports = function(app) {
 
         var new_post = new post();
         // 그리고 post요청에서 html
-        new_post.name = req.body.name;
+        new_post.name = req.body.title;
         new_post.context = req.body.context;
         new_post.sub_imgs = sub_images;
         sub_images = [];
+        new_post.user = req.body.user;
+
 
         console.log(new_post);
         new_post.save(function (err) {
@@ -58,6 +87,8 @@ module.exports = function(app) {
     app.post('/api/new/photo' ,function (req, res) {
         console.log('new photo post');
         var buf = new Buffer(req.body.blob, 'base64'); // decode
+        var tag = req.body.tag;
+        console.log(tag);
 
         var file_name = makeid();
         console.log("file_name " + file_name);
@@ -65,23 +96,13 @@ module.exports = function(app) {
             if(err) {
                 console.log("err", err);
             } else {
-                var push_file = {tag: req.body.tag , file_name : file_name};
+                var push_file = {tag: req.body.tag , image : file_name};
                 sub_images.push(push_file);
                 console.log(sub_images);
                 return res.send(file_name);
             }
         });
 
-
-        function makeid() {
-            var text = "";
-            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-            for( var i=0; i < 10; i++ )
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-            return text;
-        }
     });
 
     // frontend routes =========================================================
@@ -90,6 +111,25 @@ module.exports = function(app) {
         res.sendfile('./public/views/index.html'); // index.html 파일을 줌
     });
 
+    function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 10; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    function isLoggedIn(req, res, next) {
+
+        // if user is authenticated in the session, carry on
+        if (req.isAuthenticated())
+            return next();
+
+        // if they aren't redirect them to the home page
+        res.redirect('/');
+    }
 };
 
 

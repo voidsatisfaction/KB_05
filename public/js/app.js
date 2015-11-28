@@ -12,7 +12,8 @@ KobeMono
             }
         }
     })
-    .controller('HomeController', function ($scope) {
+    .controller('HomeController', function ($scope, $http) {
+        /*
         $scope.posts = [{title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj'},
             {title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj', sub_images: [{tag: 'hat', image: './../uplaods/bWqfKCq2Fj'}]},
             {title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj'},
@@ -24,6 +25,14 @@ KobeMono
             {title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj'},
             {title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj'},
             {title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj'}];
+        */
+
+
+        $http.get('/api/posts')
+            .success(function (posts) {
+            $scope.posts = posts;
+
+        });
     })
     .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data) {
         $scope.toggleLeft = buildToggler('left');
@@ -52,7 +61,7 @@ KobeMono
                 });
         };
     })
-    .controller('NewPostCtrl', function ($scope, $timeout, $mdDialog, $log, img_data, $mdMedia) {
+    .controller('NewPostCtrl', function ($scope, $timeout, $mdDialog, $log, img_data, $mdMedia, $http, $window) {
 
         $scope.showModal = false;
         $scope.addSubItem = function () {
@@ -87,7 +96,29 @@ KobeMono
                 $scope.customFullscreen = (sm === true);
             });
         };
-    });
+
+        $scope.upload = function () {
+            var update = {'title': $scope.title, 'context': $scope.context,
+                            'user': 'test'};
+            $http.post('/api/new/post', update)
+                .success(function(res) {
+                    $window.location.href = '/';
+                });
+        }
+    })
+    .controller('postDetailCtrl', function () {
+
+    })
+    .controller('findCtrl', ['$scope','$http','$routeParams', function ($http, $scope, $routeParams) {
+        var findString = $routeParams.findString;
+        var tags = findString.split("#").forEach(function (element, index, array) {
+           tags[index] = tags[index].replace(" ","");
+        });
+        $http.get('/api/find/' + findString)
+            .success(function (data) {
+               $scope.data = data;
+            });
+    }]);
 
 
 KobeMono.config(function ($routeProvider) {
@@ -99,6 +130,21 @@ KobeMono.config(function ($routeProvider) {
         .when('/new_post',{
             templateUrl: '/views/newPost.html',
             controller:'NewPostCtrl'
+        })
+        .when('/posts/:postId',{
+            templateUrl: '/views/post-detail.html',
+            controller:'postDetailCtrl'
+        })
+        .when('/find/tag/:findString',{
+            templateUrl: '/views/find.html',
+            controller:'findCtrl'
+        })
+        .when('/login',{
+            templateUrl: '/views/login.html',
+            controller:'loginCtrl'
+        })
+        .when('/signup',{
+            templateUrl: '/views/signup.html'
         });
 });
 
