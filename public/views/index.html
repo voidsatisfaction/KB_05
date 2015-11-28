@@ -20,34 +20,65 @@
     <script src="../libs/ng-file-upload/ng-img-crop.js"></script>
     <link rel="stylesheet" href="../libs/ng-file-upload/ng-img-crop.css">
 
-
+    <link rel="stylesheet" href="../libs/angular-material/angular-material.min.css">
+    <script src="../libs/angular-material/angular-material.min.js"></script>
+    <script src="../libs/angular-aria/angular-aria.min.js"></script>
+    <script src="../libs/angular-animate/angular-animate.min.js"></script>
 
 
     <script src="../js/app.js"></script>
     <link rel="stylesheet" href="../css/custom.css">
 
 </head>
-<body ng-app="KobeMono">
-<!-- 일단 메뉴바 -->
-    <header>
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Kobe Mono</a>
-                </div>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#/"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="#/about"><i class="fa fa-shield"></i> About</a></li>
-                    <li><a href="#/new_post"><i class="fa fa-comment"></i> PhotoUpload</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+<body ng-app="KobeMono" ng-controller="MainCtrl">
+<div id="addButton">
+    <md-button aria-label="menu" class="md-fab md-warn" ng-click="addNewPost()">
+        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
+    </md-button>
+</div>
 <!-- 메인 콘텐츠 부분 -->
-    <div id="main" ng-controller="MainCtrl">
+<div class="row">
+    <div id="main" ng-class="showSide ? 'col-xs-7' : 'col-xs-12'">
         <!-- 여기는 angular 에 의해 채워짐 -->
         <div ng-view></div>
     </div>
+    <div id="sideBar" ng-class="showSide ? 'col-xs-5' : 'hidden'">
+
+        title:
+        <input type="text" name="name" ng-model="name"><br/>
+        image:
+        <input type="file" ngf-select ng-model="mainPhoto" name="main_photo"><br/>
+        <img ng-show="newPostForm.file.$valid" ngf-thumbnail="mainPhoto">
+        context:
+        <input type="text" name="context"><br/>
+        sub_images:
+        <div ng-repeat="sub_file in sub_files track by $index">
+            <img ng-src="{{sub_file.src}}">
+        </div>
+        <button ng-click="addSubItem()">addSubItem</button>
+        <br/>
+        Add new Photo:
+        <button ng-click="AddNewPost()">submit</button>
+    </div>
+    <modal title="SubImage Form" visible="showModal">
+        <div id="AddNewPhoto_div">
+            <div>Crop Image and Upload</div>
+            <button ngf-select ng-model="picFile" accept="image/*">
+                Select Picture</button>
+            <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+                 class="cropArea">
+                <img-crop image="picFile  | ngfDataUrl"
+                          result-image="croppedDataUrl" ng-init="croppedDataUrl=''"
+                          change-on-fly="true" area-type="square">
+                </img-crop>
+            </div>
+            <div>
+                <img ng-src="{{croppedDataUrl}}" />
+            </div>
+            <button ng-click="addPhoto()"> add this photo</button>
+        </div>
+    </modal>
+</div>
+
 </body>
 </html>

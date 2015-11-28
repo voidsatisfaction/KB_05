@@ -2,23 +2,27 @@ var post = require('./models/post');
 var user = require('./models/user');
 // image 업로드를 위해 multer라는 라이브러리를 씀
 var multer = require('multer');
+var fs = require('fs');
+var path = require('path');
 
 // multer의 설정
 var image_upload = multer({
     dest: './public/uploads/'
 });
 
+
+
+var sub_images = [];
 module.exports = function(app) {
 
     // server routes ===========================================================
-
 
     app.post('/api/new/user', function (req, res) {
         var new_user = new user();
 
         new_user.name = req.body.user_name;
         new_user.save(function (err) {
-           res.json('success new user');
+            res.json('success new user');
         });
     });
 
@@ -33,22 +37,51 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/new/post', image_upload.single('main_photo') ,function (req, res) {
-        //새로운 post의 post요청이 들어오면
-        // new_post 라는 새 post 객체를 만듬.
+    app.post('/api/new/post', function (req, res) {
+        console.log('new post');
+
         var new_post = new post();
         // 그리고 post요청에서 html
         new_post.name = req.body.name;
         new_post.context = req.body.context;
-        new_post.img_name = req.file.filename;
+        new_post.sub_imgs = sub_images;
+        sub_images = [];
 
         console.log(new_post);
         new_post.save(function (err) {
             if(err)
                 res.send(err);
-
             res.json({message: 'new post created'});
-        })
+        });
+    });
+
+    app.post('/api/new/photo' ,function (req, res) {
+        console.log('new photo post');
+        var buf = new Buffer(req.body.blob, 'base64'); // decode
+
+        var file_name = makeid();
+        console.log("file_name " + file_name);
+        fs.writeFile(path.join(__dirname, '../public/uploads/' + file_name ), buf, function(err) {
+            if(err) {
+                console.log("err", err);
+            } else {
+                var push_file = {tag: req.body.tag , file_name : file_name};
+                sub_images.push(push_file);
+                console.log(sub_images);
+                return res.json({'status': 'success'});
+            }
+        });
+
+
+        function makeid() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for( var i=0; i < 10; i++ )
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
+        }
     });
 
     // frontend routes =========================================================
@@ -58,3 +91,6 @@ module.exports = function(app) {
     });
 
 };
+
+
+

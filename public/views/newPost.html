@@ -9,7 +9,7 @@
     <input type="text" name="context"><br/>
     sub_images:
     <div ng-repeat="sub_file in sub_files track by $index">
-        <img ng-src="{{sub_file.src}}">
+        <img ng-src="{{sub_file.src}}"><input type="file" fileread="sub_file.blob">
     </div>
     <br/>
     Add new Photo:
