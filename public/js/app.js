@@ -39,10 +39,8 @@ KobeMono
         */
 
 
-
-
     })
-    .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data, $http, IsLogin) {
+    .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data, $http, IsLogin, $mdToast) {
         $scope.toggleLeft = buildToggler('left');
         $scope.find='';
         /**
@@ -58,6 +56,19 @@ KobeMono
                     });
             }
         }
+
+        $scope.buynow = function (index) {
+            $scope.thisPost = $scope.posts[index];
+            $http.get('/api/buy/' + $scope.thisPost._id)
+                .success(function (data) {
+
+                });
+            $mdToast.show({
+                controller: 'ToastCtrl',
+                templateUrl: '/views/thanks.html',
+                hideDelay: 6000
+            });
+        };
 
         $scope.user ='';
         $scope.notLoggin = true;
@@ -78,6 +89,13 @@ KobeMono
             $scope.view_star = !$scope.view_star;
             $scope.stars = $scope.user.user.stars;
             console.log($scope.user.user.stars);
+        };
+        $scope.clickstarItem = function (index) {
+            $scope.clickedItem = $scope.stars[index];
+            $scope.find = $scope.clickedItem;
+            console.log($scope.find);
+            $scope.gofind();
+            $scope.toggleLeft();
         };
 
 
@@ -184,9 +202,15 @@ KobeMono
                 });
         }
     })
-    .controller('postDetailCtrl', function ($scope, $routeParams) {
+    .controller('postDetailCtrl', function ($scope, $routeParams, $http) {
         var index = $routeParams.postId;
         $scope.thisPost = $scope.posts[index];
+        $scope.buynow = function () {
+            $http.get('/api/buy/' + $scope.thisPost._id)
+                .success(function (data) {
+
+                });
+        }
 
     })
     .controller('findCtrl', ['$scope','$http','$routeParams', function ($http, $scope, $routeParams) {
@@ -210,6 +234,11 @@ KobeMono
                 $scope.Myposts = data;
             });
 
+    })
+    .controller('ToastCtrl', function($scope, $mdToast) {
+        $scope.closeToast = function() {
+            $mdToast.hide();
+        };
     });
 
 

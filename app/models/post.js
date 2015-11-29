@@ -8,7 +8,7 @@ var PostSchema = new Schema({
     sub_imgs :{type: Array},
     context : {type : String, default: ''},
     user : String,
-    click_count : Number,
+    buyCount : {type : Number, default: 0},
     tag : Array
 });
 

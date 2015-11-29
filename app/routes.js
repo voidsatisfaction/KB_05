@@ -159,6 +159,18 @@ module.exports = function(app) {
             })
     });
 
+    app.get('/api/buy/:postId', function (req, res) {
+        var postId = req.params.postId;
+        console.log(postId);
+        post.findOne({_id: postId})
+            .exec(function (err, elem) {
+                console.log(elem);
+                elem.buyCount += 1;
+                console.log(elem);
+                res.json(elem);
+            });
+    });
+
     // frontend routes =========================================================
     // 그외의 모든 요청에 대해서는
     app.get('/', function(req, res) {

@@ -35,11 +35,11 @@
 <body ng-app="KobeMono" ng-controller="MainCtrl">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()" ng-show="!notLoggin" >
                 <i class="material-icons">reorder</i>
             </md-button>
             <h2>
-                <span>Kobe Mono</span>
+                <a href="/#/"><span>Kobe Mono</span></a>
             </h2>
             <span flex></span>
             <span class="col row col-xs-9" ng-show="!notLoggin" style="float: none;">
@@ -89,10 +89,10 @@
             </md-toolbar>
             <md-content  layout-padding>
 
-                <md-button ng-show="!notLoggin" class="md-primary">
+                <md-button ng-show="!notLoggin" class="md-primary" ng-click="toggleLeft()">
                     <a href="#/mypage">Welcome! {{user.user.local.email}}</a>
                 </md-button><br/>
-                <md-button class="md-primary">
+                <md-button class="md-primary" ng-click="toggleLeft()">
                     <a href="#/new_post">new post</a>
                 </md-button><br/>
                 <md-button class="md-primary">
@@ -110,7 +110,7 @@
                     <a>+</a>
                 </md-button>
 
-                <md-button class="md-primary" ng-repeat="star in stars track by $index" ng-show="view_star">
+                <md-button class="md-primary" ng-repeat="star in stars track by $index" ng-show="view_star" ng-click="clickstarItem($index)">
                     {{star}}
                 </md-button>
                 <md-button ng-click="close()" class="md-primary">

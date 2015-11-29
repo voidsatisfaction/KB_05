@@ -1,10 +1,10 @@
 <div class="container mypagecontainer">
     <div class="page-header">
-        <h1>ポスト一覧</h1>
+        <h1>Posts</h1>
         <!-- DB -->
         <md-content class="md-padding" layout="row" layout-wrap layout-align="center start">
             <div class="row">
-                <md-card ng-repeat="post in Myposts" class="col col-md-4 md-card">
+                <md-card ng-repeat="post in Myposts" class="col col-md-3 md-card">
                     <img ng-src="/uploads/{{post.sub_imgs[0].image}}" class="md-card-image" alt="Washed Out">
                     <md-card-title>
                         <md-card-title-text>
@@ -16,24 +16,23 @@
                             {{post.context}}
                         </p>
                     </md-card-content>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button>Action 1</md-button>
-                        <md-button>Action 2</md-button>
-                    </md-card-actions>
+                    <h4 script="text-align: center">
+                        sales :
+                    </h4>
                 </md-card>
             </div>
         </md-content>
-
+        ​
     </div>
     ​
-    <div class="page-header"><h1>ユーザー情報</h1></div>
+    <div class="page-header"><h1>User Information</h1></div>
     <div class="row">
         <div class="col-md-4">
             <div class="thumbnail">
                 <img src="../img/mypage_chart.png" alt="chart" style="height:250px;text-align: center;">
                 <div class="caption">
                     <p style="font-size: 50px;text-align: center;">{{postCount}}</p> <!-- Use DB -->
-                    <h3 style="text-align:center">ポスト合計</h3>
+                    <h3 style="text-align:center">Total Posts</h3>
                 </div>
             </div>
         </div>
@@ -42,7 +41,7 @@
                 <img src="../img/mypage_follow.png" alt="follow" style="height:250px;text-align: center;">
                 <div class="caption">
                     <p style="font-size: 50px;text-align: center;">350</p>
-                    <h3 style="text-align:center">フォローワー</h3>
+                    <h3 style="text-align:center">Follower(予定)</h3>
                 </div>
             </div>
         </div>
@@ -50,12 +49,12 @@
             <div class="thumbnail">
                 <img src="../img/mypage_pinfo.jpg" alt="personal_info" style="height:250px;text-align: center;">
                 <div class="caption">
-                    <p style="font-size: 50px;text-align: center;"><a href="#" class="btn btn-default" role="button">個人情報変更</a><!-- Use DB -->
-                    <h3 style="text-align:center">個人情報管理</h3>
+                    <p style="font-size: 50px;text-align: center;"><a href="#" class="btn btn-default" role="button">Change Personal Information</a><!-- Use DB -->
+                    <h3 style="text-align:center">Manage Personal Info</h3>
                 </div>
             </div>
         </div>
     </div>
-    <div class="page-header"><h1>ユーザーからのコメント</h1></div>
+    <div class="page-header"><h1>Comments From Others(予定)</h1></div>
     <!-- DB -->
 </div>
