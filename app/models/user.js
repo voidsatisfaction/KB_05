@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 
 var UserSchema = new Schema({
-    name : {type : String, default: ''},
+    name : String,
     local            : {
         email        : String,
         password     : String,
@@ -25,7 +25,8 @@ var UserSchema = new Schema({
         token        : String,
         email        : String,
         name         : String
-    }
+    },
+    stars: Array
 });
 
 

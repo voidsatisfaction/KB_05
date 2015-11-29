@@ -12,6 +12,17 @@ KobeMono
             }
         }
     })
+    .service('IsLogin', function () {
+        var img;
+        return {
+            setData: function (item) {
+                img = item;
+            },
+            getData: function () {
+                return img;
+            }
+        }
+    })
     .controller('HomeController', function ($scope, $http) {
         /*
         $scope.posts = [{title: 'test', context:'wow,test', image:'./../uploads/bWqfKCq2Fj'},
@@ -31,7 +42,7 @@ KobeMono
 
 
     })
-    .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data, $http) {
+    .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data, $http, IsLogin) {
         $scope.toggleLeft = buildToggler('left');
         $scope.find='';
         /**
@@ -48,13 +59,28 @@ KobeMono
             }
         }
 
+        $scope.user ='';
         $scope.notLoggin = true;
+        IsLogin.setData(false);
         $http.get('/profile')
             .success(function (user) {
-                console.log(user);
-                $scope.user = user;
-                $scope.notLoggin = false;
+                console.log(typeof user);
+                if(typeof user == 'object'){
+                    $scope.user = user;
+                    $scope.notLoggin = false;
+                    IsLogin.setData(true);
+                }
             });
+
+
+        $scope.view_star = false;
+        $scope.click_star = function () {
+            $scope.view_star = !$scope.view_star;
+            $scope.stars = $scope.user.user.stars;
+            console.log($scope.user.user.stars);
+        };
+
+
 
         $http.get('/api/posts')
             .success(function (posts) {
@@ -83,15 +109,25 @@ KobeMono
             }
 
 
-        }
-
-    }).controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+        };
         $scope.close = function () {
             $mdSidenav('left').close()
                 .then(function () {
-                    $log.debug("close RIGHT is done");
+                    $log.debug("close Left is done");
                 });
         };
+        $scope.addstar = function () {
+            console.log('/api/save_star/' + $scope.user.user.local.email +'/'+$scope.starString);
+            $http.get('/api/save_star/' + $scope.user.user.local.email +'/'+$scope.starString)
+                .success(function (data) {
+                    console.log(data);
+                    $scope.stars = data.stars;
+                    $scope.starString = ' ';
+                });
+        };
+
+    }).controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log, $http, IsLogin) {
+
     })
     .controller('NewPostCtrl', function ($scope, $timeout, $mdDialog, $log, img_data, $mdMedia, $http, $window) {
 
@@ -140,14 +176,17 @@ KobeMono
 
         $scope.upload = function () {
             var update = {'title': $scope.title, 'context': $scope.context,
-                            'user': 'test'};
+                            'user': $scope.user.user.local.email};
+            console.log($scope.user.user.local.email);
             $http.post('/api/new/post', update)
                 .success(function(res) {
                     $window.location.href = '/';
                 });
         }
     })
-    .controller('postDetailCtrl', function () {
+    .controller('postDetailCtrl', function ($scope, $routeParams) {
+        var index = $routeParams.postId;
+        $scope.thisPost = $scope.posts[index];
 
     })
     .controller('findCtrl', ['$scope','$http','$routeParams', function ($http, $scope, $routeParams) {
@@ -159,7 +198,19 @@ KobeMono
             .success(function (data) {
                $scope.data = data;
             });
-    }]);
+    }])
+    .controller('mypageCtrl', function ($http,$scope) {
+        console.log('/api/user/postCount/' + $scope.user.user.local.email);
+        $http.get('/api/user/postCount/' + $scope.user.user.local.email)
+            .success(function (data) {
+                $scope.postCount = data;
+            });
+        $http.get('/api/user/post/' + $scope.user.user.local.email)
+            .success(function (data) {
+                $scope.Myposts = data;
+            });
+
+    });
 
 
 KobeMono.config(function ($routeProvider) {
@@ -171,7 +222,7 @@ KobeMono.config(function ($routeProvider) {
             templateUrl: '/views/newPost.html',
             controller:'NewPostCtrl'
         })
-        .when('/posts/:postId',{
+        .when('/post/:postId',{
             templateUrl: '/views/post-detail.html',
             controller:'postDetailCtrl'
         })
@@ -181,6 +232,10 @@ KobeMono.config(function ($routeProvider) {
         })
         .when('/signup',{
             templateUrl: '/views/signup.html'
+        })
+        .when('/mypage',{
+            templateUrl: '/views/mypage.html',
+            controller: 'mypageCtrl'
         });
 });
 

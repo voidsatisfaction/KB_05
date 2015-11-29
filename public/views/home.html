@@ -1,7 +1,9 @@
 <md-content class="md-padding" layout="row" layout-wrap layout-align="center start">
     <div class="row">
-        <md-card ng-repeat="post in posts" class="col col-md-4 md-card">
-            <img ng-src="/uploads/{{post.sub_imgs[0].image}}" class="md-card-image" alt="Washed Out">
+        <md-card ng-repeat="post in posts track by $index" class="col col-md-4 md-card" >
+            <a href="#/post/{{$index}}">
+                <img ng-src="/uploads/{{post.sub_imgs[0].image}}" class="md-card-image" alt="Washed Out">
+            </a>
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{post.title}}</span>

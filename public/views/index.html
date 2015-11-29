@@ -26,64 +26,100 @@
     <script src="../libs/angular-animate/angular-animate.min.js"></script>
 
     <script src="../libs/ngUpload/ng-upload.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="../js/app.js"></script>
     <link rel="stylesheet" href="../css/custom.css">
 
 </head>
 <body ng-app="KobeMono" ng-controller="MainCtrl">
-<md-toolbar>
-    <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
-            <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
-        </md-button>
-        <h2>
-            <span>Kobe Mono</span>
-        </h2>
-        <span flex></span>
-        <span ng-show="!notLoggin" style="float: none;">
-            <input type="text" ng-model="find" style="color: black;">
-            <md-button class="md-icon-button" aria-label="Favorite" ng-click="gofind()">
-                検索
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+                <i class="material-icons">reorder</i>
             </md-button>
-        </span>
-        <div ng-show="notLoggin">
-            <button class="btn btn-default" style="float: right; margin-left: 10px;">Signup</button>
-            <form action="/login" method="post" style="float: right">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="Input-group loginform" style="margin-right: 10px;">
-                        <input type="text" class="form-control" placeholder="E-mail" name="email">
-                    </li>
-                    <li class="loginform" style="margin-right: 10px;">
-                        <input type="text" class="form-control" placeholder="Password" name="password">
-                    </li>
-                    <li class="loginform" style="margin-right: 10px;">
-                        <input type="submit" class="form-control" value="Login">
-                    </li>
-                </ul>
-            </form>
-        </div>
-    </div>
-</md-toolbar>
-<div id="addButton">
-    <md-button aria-label="menu" class="md-fab md-warn md-primary"  ng-click="toggleLeft()">
-        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
-    </md-button>
-</div>
-<section layout="row" flex>
-    <md-sidenav class="md-sidenav-left" md-component-id="left">
-        <md-toolbar class="md-theme-light">
-            <h1 class="md-toolbar-tools">Sidenav Right</h1>
-        </md-toolbar>
-        <md-content ng-controller="LeftCtrl" layout-padding>
+            <h2>
+                <span>Kobe Mono</span>
+            </h2>
+            <span flex></span>
+            <span class="col row col-xs-9" ng-show="!notLoggin" style="float: none;">
+                <div class="col col-xs-6">
 
-            <md-button ng-click="close()" class="md-primary">
-                Close Sidenav Right
-            </md-button>
-        </md-content>
-    </md-sidenav>
-</section>
-<div ng-view></div>
+                </div>
+                <div class="list col col-xs-3">
+                    <input type="text" class="form-control" ng-model="find" placeholder="Search your style" aria-describedby="basic-addon1">
+                </div>
+                <div class="list col col-xs-1">
+                    <button class="btn btn-default" id="search" ng-click="gofind()">
+                        search
+                    </button>
+                </div>
+                <div class="col col-xs-2 col">
+                    <i id="user" class="w3-large glyphicon glyphicon-user"></i> {{user.user.local.email}}
+                </div>
+        </span>
+            <div ng-show="notLoggin">
+                <button class="btn btn-default" style="float: right; margin-left: 10px;"><a href="#/signup">Signup</a></button>
+                <form action="/login" method="post" style="float: right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="Input-group loginform" style="margin-right: 10px;">
+                            <input type="text" class="form-control" placeholder="E-mail" name="email">
+                        </li>
+                        <li class="loginform" style="margin-right: 10px;">
+                            <input type="text" class="form-control" placeholder="Password" name="password">
+                        </li>
+                        <li class="loginform" style="margin-right: 10px;">
+                            <input type="submit" class="form-control" value="Login">
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </md-toolbar>
+<!--
+    <div id="addButton">
+        <md-button aria-label="menu" class="md-fab md-warn md-primary"  ng-click="toggleLeft()">
+            <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
+        </md-button>
+    </div>-->
+    <section layout="row" flex>
+        <md-sidenav class="md-sidenav-left" md-component-id="left">
+            <md-toolbar class="md-theme-light">
+                <h1 class="md-toolbar-tools">Sidenav Right</h1>
+            </md-toolbar>
+            <md-content  layout-padding>
+
+                <md-button ng-show="!notLoggin" class="md-primary">
+                    <a href="#/mypage">Welcome! {{user.user.local.email}}</a>
+                </md-button><br/>
+                <md-button class="md-primary">
+                    <a href="#/new_post">new post</a>
+                </md-button><br/>
+                <md-button class="md-primary">
+                    <a href="/logout">logout</a>
+                </md-button><br/>
+                <md-button class="md-primary">
+                    <a ng-click="click_star()">즐겨찾기</a>
+                </md-button>
+                <md-input-container ng-show="view_star">
+                    <form>
+                        <input type="text" ng-model="starString">
+                    </form>
+                </md-input-container>
+                <md-button class="md-primary" ng-click="addstar()" ng-show="view_star">
+                    <a>+</a>
+                </md-button>
+
+                <md-button class="md-primary" ng-repeat="star in stars track by $index" ng-show="view_star">
+                    {{star}}
+                </md-button>
+                <md-button ng-click="close()" class="md-primary">
+                    Close Sidenav Right
+                </md-button>
+            </md-content>
+        </md-sidenav>
+    </section>
+    <div ng-view></div>
 
     <!--
     <modal title="SubImage Form" visible="showModal">
@@ -105,7 +141,6 @@
         </div>
     </modal>
     -->
-</div>
 
 </body>
 </html>

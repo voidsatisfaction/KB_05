@@ -2,7 +2,7 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>New sub Image</h2>
+                <h2>Select Image</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -12,19 +12,20 @@
         <md-dialog-content>
             <div class="md-dialog-content">
                 <div class="row">
-                    <md-button ngf-select ng-model="photo" accept="image/*" class="md-icon-button">
-                        選択</md-button>
+
                     <div ngf-drop ng-model="photo" ngf-pattern="image/*"
-                         class="cropArea">
+                         class="cropArea col-sm-6">
                         <img-crop image="photo  | ngfDataUrl"
                                   result-image="croppedDataUrl" ng-init="croppedDataUrl=''"
                                   change-on-fly="true" area-type="square">
                         </img-crop>
                     </div>
-                    <div>
+                    <div class="col-sm-6">
                         <img id="cropped_image" ng-src="{{croppedDataUrl}}" />
                     </div>
+
                 </div>
+
                 <md-input-container>
                     <label>Tag</label>
                     <input type="text" ng-model="tag">
@@ -33,12 +34,12 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
+            <md-button ngf-select ng-model="photo" accept="image/*" class="md-icon-button">
+                Select</md-button>
             <md-button ng-click="Addd()">
                 Enter
             </md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>
-
-
 

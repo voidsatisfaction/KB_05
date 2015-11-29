@@ -124,6 +124,41 @@ module.exports = function(app) {
 
     });
 
+    app.get('/api/user/postCount/:user', function (req, res) {
+        var username = req.params.user;
+        post.find({user: username})
+            .exec(function (err, elems) {
+                res.json(elems.length);
+            });
+    });
+    app.get('/api/user/post/:user', function (req, res) {
+        var username = req.params.user;
+        post.find({user: username})
+            .exec(function (err, elems) {
+                res.json(elems);
+            })
+    });
+
+
+    app.get('/api/save_star/:user/:starstring', function (req, res) {
+        var username = req.params.user;
+        var starstring = req.params.starstring;
+        user.findOne({name: username})
+            .exec(function (err, elem) {
+                elem.stars.push(starstring);
+                elem.save(function (err) {
+                    res.send(elem);
+                });
+            });
+    });
+    app.get('/api/save_star/:user', function(req, res){
+        var username = req.params.user;
+        user.findOne({name: username})
+            .exec(function (err, elem) {
+                res.json(elem.stars);
+            })
+    });
+
     // frontend routes =========================================================
     // 그외의 모든 요청에 대해서는
     app.get('/', function(req, res) {

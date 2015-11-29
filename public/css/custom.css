@@ -38,6 +38,10 @@
     bottom: 0;
     right: 0;
 }
+​
+.loginform {
+    margin-right: 10px;
+}
 body .mypagecontainer .row img {
     height:250px;
     text-align: center;
@@ -48,6 +52,3 @@ body .mypagecontainer .row p {
     text-align: center;
 }
 ​
-.loginform {
-    margin-right: 10px;
-}
