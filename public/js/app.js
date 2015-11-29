@@ -47,6 +47,14 @@ KobeMono
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
          */
+
+        $scope.gohome = function () {
+            $http.get('/api/posts')
+                .success(function (posts) {
+                    $scope.posts = posts;
+
+                });
+        };
         function buildToggler(navID) {
             return function() {
                 $mdSidenav(navID)
@@ -92,7 +100,7 @@ KobeMono
         };
         $scope.clickstarItem = function (index) {
             $scope.clickedItem = $scope.stars[index];
-            $scope.find = $scope.clickedItem;
+            $scope.find = '#'+$scope.clickedItem;
             console.log($scope.find);
             $scope.gofind();
             $scope.toggleLeft();

@@ -39,7 +39,7 @@
                 <i class="material-icons">reorder</i>
             </md-button>
             <h2>
-                <a href="/#/"><span>Kobe Mono</span></a>
+                <a href="/#/"><span ng-click="gohome()">SHOWROOM</span></a>
             </h2>
             <span flex></span>
             <span class="col row col-xs-9" ng-show="!notLoggin" style="float: none;">
@@ -99,7 +99,7 @@
                     <a href="/logout">logout</a>
                 </md-button><br/>
                 <md-button class="md-primary">
-                    <a ng-click="click_star()">즐겨찾기</a>
+                    <a ng-click="click_star()">bookmark</a>
                 </md-button>
                 <md-input-container ng-show="view_star">
                     <form>
