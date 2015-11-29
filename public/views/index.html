@@ -38,15 +38,31 @@
             <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
         </md-button>
         <h2>
-            <span>Toolbar with Icon Buttons</span>
+            <span>Kobe Mono</span>
         </h2>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="Favorite">
-            <md-icon md-svg-icon="img/icons/favorite.svg" style="color: greenyellow;"></md-icon>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="More">
-            <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
-        </md-button>
+        <span ng-show="!notLoggin" style="float: none;">
+            <input type="text" ng-model="find" style="color: black;">
+            <md-button class="md-icon-button" aria-label="Favorite" ng-click="gofind()">
+                検索
+            </md-button>
+        </span>
+        <div ng-show="notLoggin">
+            <button class="btn btn-default" style="float: right; margin-left: 10px;">Signup</button>
+            <form action="/login" method="post" style="float: right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="Input-group loginform" style="margin-right: 10px;">
+                        <input type="text" class="form-control" placeholder="E-mail" name="email">
+                    </li>
+                    <li class="loginform" style="margin-right: 10px;">
+                        <input type="text" class="form-control" placeholder="Password" name="password">
+                    </li>
+                    <li class="loginform" style="margin-right: 10px;">
+                        <input type="submit" class="form-control" value="Login">
+                    </li>
+                </ul>
+            </form>
+        </div>
     </div>
 </md-toolbar>
 <div id="addButton">

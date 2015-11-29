@@ -38,3 +38,16 @@
     bottom: 0;
     right: 0;
 }
+body .mypagecontainer .row img {
+    height:250px;
+    text-align: center;
+}
+​
+body .mypagecontainer .row p {
+    font-size: 50px;
+    text-align: center;
+}
+​
+.loginform {
+    margin-right: 10px;
+}

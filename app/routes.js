@@ -5,6 +5,8 @@ var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
 
+var passport = require('passport');
+
 // multer의 설정
 var image_upload = multer({
     dest: './public/uploads/'
@@ -27,14 +29,26 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/login', function (req, res) {
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/', // redirect to the secure profile section
+        failureRedirect : '/', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
 
+    app.get('/profile', isLoggedIn, function(req, res) {
+        res.json({user : req.user});
     });
 
     app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });
+
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
 
     // /api/posts의 get event가 발생한다면
     app.get('/api/posts', function(req, res) {
@@ -53,15 +67,16 @@ module.exports = function(app) {
             });
     });
 
-    app.get('/api/find/tag/:findString', function (req, res) {
-        var findString = req.params.findString;
-        var tags = findString.split("#").forEach(function (element, index, array) {
-            tags[index] = tags[index].replace(" ","");
-        });
-        post.find({tag: tags[0]})
+    app.get('/api/find/tag', function (req, res) {
+        var findString = req.param('find');
+        console.log(findString);
+
+        post.find({tag: findString})
             .exec(function (err, docs) {
+                console.log(docs);
                 res.json(docs);
             });
+
     });
 
     app.post('/api/new/post', function (req, res) {
@@ -72,6 +87,10 @@ module.exports = function(app) {
         new_post.name = req.body.title;
         new_post.context = req.body.context;
         new_post.sub_imgs = sub_images;
+        for(var i in sub_images){
+            console.log(i)
+            new_post.tag.push(sub_images[i].tag);
+        }
         sub_images = [];
         new_post.user = req.body.user;
 
@@ -122,6 +141,7 @@ module.exports = function(app) {
     }
 
     function isLoggedIn(req, res, next) {
+
 
         // if user is authenticated in the session, carry on
         if (req.isAuthenticated())

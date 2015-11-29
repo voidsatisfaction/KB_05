@@ -28,14 +28,12 @@ KobeMono
         */
 
 
-        $http.get('/api/posts')
-            .success(function (posts) {
-            $scope.posts = posts;
 
-        });
+
     })
-    .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data) {
+    .controller('MainCtrl', function ($scope, $mdDialog, $mdMedia, $timeout, $mdSidenav, $log, img_data, $http) {
         $scope.toggleLeft = buildToggler('left');
+        $scope.find='';
         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
@@ -50,8 +48,42 @@ KobeMono
             }
         }
 
+        $scope.notLoggin = true;
+        $http.get('/profile')
+            .success(function (user) {
+                console.log(user);
+                $scope.user = user;
+                $scope.notLoggin = false;
+            });
+
+        $http.get('/api/posts')
+            .success(function (posts) {
+                $scope.posts = posts;
+
+            });
+
+        $scope.gofind = function () {
+            var findString = $scope.find;
+            console.log(findString);
+            var tags = findString.split("#");
+            console.log(tags);
+            $scope.posts = [];
+
+            for(var i in tags){
+                if(i!=0){
+                    var tag = tags[i];
+                    $http({
+                        url: '/api/find/tag',
+                        method: "GET",
+                        params: {find: tag}
+                    }).success(function (data) {
+                        $scope.posts = $scope.posts.concat(data);
+                    });
+                }
+            }
 
 
+        }
 
     }).controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
         $scope.close = function () {
@@ -62,6 +94,15 @@ KobeMono
         };
     })
     .controller('NewPostCtrl', function ($scope, $timeout, $mdDialog, $log, img_data, $mdMedia, $http, $window) {
+
+        $http.get('/profile')
+            .success(function (user) {
+                console.log(user);
+                $scope.user = user;
+                $scope.notLoggin = false;
+            });
+
+
 
         $scope.showModal = false;
         $scope.addSubItem = function () {
@@ -124,8 +165,7 @@ KobeMono
 KobeMono.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: '/views/home.html',
-            controller: 'HomeController'
+            templateUrl: '/views/home.html'
         })
         .when('/new_post',{
             templateUrl: '/views/newPost.html',
@@ -134,10 +174,6 @@ KobeMono.config(function ($routeProvider) {
         .when('/posts/:postId',{
             templateUrl: '/views/post-detail.html',
             controller:'postDetailCtrl'
-        })
-        .when('/find/tag/:findString',{
-            templateUrl: '/views/find.html',
-            controller:'findCtrl'
         })
         .when('/login',{
             templateUrl: '/views/login.html',

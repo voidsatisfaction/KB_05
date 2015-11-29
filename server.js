@@ -58,6 +58,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ==================================================
 require('./app/routes')(app); // configure our routes
+require('./config/passport')(passport);
+
 
 // start app ===============================================
 // app.listen는 app이 지금부터 port로 들어오면 요청을 받는다는 의미.
