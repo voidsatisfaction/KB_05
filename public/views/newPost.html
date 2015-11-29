@@ -23,6 +23,7 @@
             <md-button class="md-primary md-raised col-sm-2" ng-click="upload()" flex-sm="100" flex-md="100" flex-gt-md="auto">
                 Upload
             </md-button>
+<<<<<<< HEAD
         </div>
 
         <div class="row">
@@ -38,6 +39,23 @@
 
         </div>
 
+=======
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3 col-sm-6 md-card">
+                <img width="300" ngf-thumbnail="photo">
+            </div>
+
+
+        <div ng-repeat="sub_file in sub_files track by $index" class="row col-md-3 col-sm-6 md-card">
+            <img width="250" ng-src="{{sub_file.src}}">
+        </div>
+
+        </div>
+
+>>>>>>> 6246e0ad944ab030225f07859d334cca61df6db1
 
     </form>
 </md-content>
