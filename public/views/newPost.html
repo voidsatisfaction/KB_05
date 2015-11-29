@@ -5,25 +5,39 @@
             <input type="text" id="title"
                    ng-model="title" md-autofocus>
         </md-input-container>
-        <md-input-container>
-            <input type="file" id="photo"
-                   ng-model="photo" ngf-select file-model="file">
-        </md-input-container>
-        <img width="200" ngf-thumbnail="photo">
-        <md-input-container>
+
+        <md-input-container class="row col-md-12">
             <label>TextArea input</label>
                     <textarea type="text" id="context"
                               ng-model="context"></textarea>
         </md-input-container>
-        <div ng-repeat="sub_file in sub_files track by $index">
-            <img ng-src="{{sub_file.src}}">
+
+        <div class="row">
+            <md-input-container class="col-md-6 col-sm-6">
+                <input type="file" id="photo"
+                       ng-model="photo" ngf-select file-model="file">
+            </md-input-container>
+            <md-button class="md-primary md-raised col-sm-2" ng-click="AddNewPost($event)" flex-sm="100" flex-md="100" flex-gt-md="auto">
+                Add images
+            </md-button>
+            <md-button class="md-primary md-raised col-sm-2" ng-click="upload()" flex-sm="100" flex-md="100" flex-gt-md="auto">
+                Upload
+            </md-button>
         </div>
-        <md-button class="md-primary md-raised" ng-click="AddNewPost($event)" flex-sm="100" flex-md="100" flex-gt-md="auto">
-            Add sub_images
-        </md-button>
-        <md-button class="md-primary md-raised" ng-click="upload()" flex-sm="100" flex-md="100" flex-gt-md="auto">
-            Upload
-        </md-button>
+
+        <div class="row">
+
+            <div class="col-md-3 col-sm-6 md-card">
+                <img width="300" ngf-thumbnail="photo">
+            </div>
+
+
+        <div ng-repeat="sub_file in sub_files track by $index" class="row col-md-3 col-sm-6 md-card">
+            <img width="250" ng-src="{{sub_file.src}}">
+        </div>
+
+        </div>
+
 
     </form>
 </md-content>
